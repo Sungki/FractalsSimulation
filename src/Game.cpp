@@ -2,9 +2,14 @@
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 
-Game::Game()
+#include "TreeFractal.h"
+
+#define WIDTH 1024
+#define HEIGHT 1024
+
+Game::Game() : it(0), flag(false)
 {
-    window.create(sf::VideoMode(1024, 768, 32), "Fractals");
+    window.create(sf::VideoMode(WIDTH, HEIGHT, 32), "Fractals");
 }
 
 void Game::HandleInput()
@@ -17,6 +22,8 @@ void Game::HandleInput()
 
 void Game::Run()
 {
+    window.setFramerateLimit(30);
+
     while (window.isOpen()) {
         HandleInput();
         Render();
@@ -25,5 +32,30 @@ void Game::Run()
 
 void Game::Render()
 {
+    window.clear();
+
+    TreeFractal tf = TreeFractal();
+    tf.setStartLocation(WIDTH / 2, HEIGHT - 100);
+    tf.setLeftAngle(30);
+    tf.setRightAngle(17);
+    tf.setNumberOfIterations(it);
+    tf.setInitWidth(12);
+    tf.setInitHeight(96);
+    sf::Color brown = sf::Color(70, 190, 63);
+    tf.setColor(brown);
+    tf.setScalingFactor(0.88);
+    tf.Render(window);
+
+    if (!flag)
+    {
+        it++;
+        if (it > 15) flag = true;
+    }
+    else
+    {
+        it--;
+        if (it < 0) flag = false;
+    }
+
     window.display();
 }

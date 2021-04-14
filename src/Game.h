@@ -11,6 +11,9 @@ private:
     void Render();
     void HandleInput();
 
+    int it;
+    bool flag;
+
 public:
     Game();
     void Run();
